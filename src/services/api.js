@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5258';
+const API_URL = 'http://localhost:8080';
 
 export const fetchRouteData = async () => {
   try {
