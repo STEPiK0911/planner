@@ -1,6 +1,0 @@
-@RoutePlannerApi_HostAddress = http://localhost:5258
-
-GET {{RoutePlannerApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
