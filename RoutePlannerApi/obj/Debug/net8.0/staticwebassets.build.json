@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "B9iTGbEWSxDSXuxKHcjgdeYhVRuecs8CDWeSJ9hQTEs=",
+  "Source": "RoutePlannerApi",
+  "BasePath": "_content/RoutePlannerApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
