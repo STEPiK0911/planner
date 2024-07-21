@@ -16,10 +16,10 @@ export const fetchRouteData = async (numPoints = 100) => {
   const data = Array.from({ length: numPoints }, (_, index) => ({
     id: index + 1,
     name: `Point ${index + 1}`,
-    distance: index,
     height: Math.floor(Math.random() * 1000),
-    speed: ['FAST', 'NORMAL', 'SLOW'][Math.floor(Math.random() * 3)],
-    surface: ['SAND', 'ASPHALT', 'GROUND'][Math.floor(Math.random() * 3)],
+    distance: index * 10,
+    surface: ['SAND', 'ASPHALT', 'GROUND'][index % 3],
+    maxSpeed: ['FAST', 'NORMAL', 'SLOW'][index % 3],
   }));
   return data;
 };
