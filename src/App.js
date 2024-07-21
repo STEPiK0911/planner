@@ -1,11 +1,11 @@
 import React from 'react';
-import Chart from './components/Chart';
+import D3Chart from './components/D3Chart';
 import { Container, CssBaseline } from '@mui/material';
 
 const App = () => (
   <Container>
     <CssBaseline />
-    <Chart />
+    <D3Chart />
   </Container>
 );
 
