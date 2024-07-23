@@ -14,9 +14,9 @@ const getColorBySpeed = (speed) => {
 
 const getColorBySurface = (surface) => {
   switch (surface) {
-    case 'SAND': return '#FFFF99';
-    case 'ASPHALT': return '#B3B3B3';
-    case 'GROUND': return '#99FF99';
+    case 'GRASS': return '#99FF99'; // Зелёный
+    case 'SAND': return '#FFFF99'; // Жёлтый
+    case 'GRAVEL': return '#B3B3FF'; // Фиолетовый
     default: return '#FFFFFF';
   }
 };
@@ -30,32 +30,42 @@ const useStyles = createUseStyles({
     display: 'none',
     pointerEvents: 'none',
   },
+  chartContainer: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
-const D3Chart = () => {
+const D3Chart = ({ numPoints }) => {
   const classes = useStyles();
   const chartRef = useRef();
   const tooltipRef = useRef();
 
   useEffect(() => {
     const getData = async () => {
-      const data = await fetchRouteData();
+      const data = await fetchRouteData(numPoints);
       drawChart(data);
     };
 
     const drawChart = (data) => {
       const margin = { top: 20, right: 30, bottom: 30, left: 40 };
-      const width = 800 - margin.left - margin.right;
-      const height = 400 - margin.top - margin.bottom;
 
       // Очистка предыдущего графика
       d3.select(chartRef.current).selectAll('*').remove();
 
       const svg = d3.select(chartRef.current)
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('viewBox', `0 0 800 400`)
+        .attr('preserveAspectRatio', 'xMidYMid meet')
         .append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
+
+      const width = 800 - margin.left - margin.right;
+      const height = 400 - margin.top - margin.bottom;
 
       const x = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.distance)])
@@ -123,13 +133,13 @@ const D3Chart = () => {
     };
 
     getData();
-  }, []);
+  }, [numPoints]);
 
   return (
-    <>
+    <div className={classes.chartContainer}>
       <svg ref={chartRef}></svg>
       <div ref={tooltipRef} className={classes.tooltip}></div>
-    </>
+    </div>
   );
 };
 

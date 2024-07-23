@@ -13,13 +13,16 @@ export const fetchRouteDataFromServer = async () => {
 };
 
 export const fetchRouteData = async (numPoints = 100) => {
+  const surfaces = ['GRASS', 'SAND', 'GRAVEL']; // Зелёный, жёлтый, фиолетовый
   const data = Array.from({ length: numPoints }, (_, index) => ({
     id: index + 1,
     name: `Point ${index + 1}`,
     height: Math.floor(Math.random() * 1000),
     distance: index * 10,
-    surface: ['SAND', 'ASPHALT', 'GROUND'][index % 3],
-    maxSpeed: ['FAST', 'NORMAL', 'SLOW'][index % 3],
+    surface: surfaces[Math.floor(Math.random() * surfaces.length)], // случайный выбор поверхности
+    maxSpeed: ['FAST', 'NORMAL', 'SLOW'][Math.floor(Math.random() * 3)], // случайный выбор скорости
   }));
   return data;
 };
+
+export default fetchRouteData;
