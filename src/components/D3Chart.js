@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { fetchRouteData } from '../services/api';
 import { createUseStyles } from 'react-jss';
+import { Slider, Typography, Box } from '@mui/material';
 
 const getColorBySpeed = (speed) => {
   switch (speed) {
@@ -14,9 +15,9 @@ const getColorBySpeed = (speed) => {
 
 const getColorBySurface = (surface) => {
   switch (surface) {
-    case 'GRASS': return '#99FF99'; // Зелёный
-    case 'SAND': return '#FFFF99'; // Жёлтый
-    case 'GRAVEL': return '#B3B3FF'; // Фиолетовый
+    case 'SAND': return '#FFFF99';
+    case 'ASPHALT': return '#B3B3B3';
+    case 'GROUND': return '#99FF99';
     default: return '#FFFFFF';
   }
 };
@@ -30,19 +31,24 @@ const useStyles = createUseStyles({
     display: 'none',
     pointerEvents: 'none',
   },
-  chartContainer: {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     width: '100%',
     height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+  },
+  slider: {
+    width: '80%',
+    marginTop: '20px',
   },
 });
 
-const D3Chart = ({ numPoints }) => {
+const D3Chart = () => {
   const classes = useStyles();
   const chartRef = useRef();
   const tooltipRef = useRef();
+  const [numPoints, setNumPoints] = useState(100);
 
   useEffect(() => {
     const getData = async () => {
@@ -52,20 +58,16 @@ const D3Chart = ({ numPoints }) => {
 
     const drawChart = (data) => {
       const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+      const width = chartRef.current.clientWidth - margin.left - margin.right;
+      const height = chartRef.current.clientHeight - margin.top - margin.bottom;
 
-      // Очистка предыдущего графика
       d3.select(chartRef.current).selectAll('*').remove();
 
       const svg = d3.select(chartRef.current)
-        .attr('width', '100%')
-        .attr('height', '100%')
-        .attr('viewBox', `0 0 800 400`)
-        .attr('preserveAspectRatio', 'xMidYMid meet')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
         .append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
-
-      const width = 800 - margin.left - margin.right;
-      const height = 400 - margin.top - margin.bottom;
 
       const x = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.distance)])
@@ -136,8 +138,23 @@ const D3Chart = ({ numPoints }) => {
   }, [numPoints]);
 
   return (
-    <div className={classes.chartContainer}>
-      <svg ref={chartRef}></svg>
+    <div className={classes.container}>
+      <Box className={classes.slider}>
+        <Typography id="slider" gutterBottom>
+          Number of Points
+        </Typography>
+        <Slider
+          value={numPoints}
+          min={10}
+          max={1000}
+          onChange={(e, value) => setNumPoints(value)}
+          aria-labelledby="slider"
+        />
+        <Typography>
+          {numPoints} points
+        </Typography>
+      </Box>
+      <svg ref={chartRef} style={{ width: '100%', height: '400px' }}></svg>
       <div ref={tooltipRef} className={classes.tooltip}></div>
     </div>
   );
