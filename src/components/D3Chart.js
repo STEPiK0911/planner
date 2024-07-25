@@ -13,13 +13,9 @@ const getColorBySpeed = (speed) => {
   }
 };
 
-const getColorBySurface = (surface) => {
-  switch (surface) {
-    case 'SAND': return '#FFFF99';
-    case 'ASPHALT': return '#B3B3B3';
-    case 'GROUND': return '#99FF99';
-    default: return '#FFFFFF';
-  }
+const getRandomColor = () => {
+  const colors = ['#99FF99', '#FFFF99', '#D9B3FF']; // зелёный, жёлтый, фиолетовый
+  return colors[Math.floor(Math.random() * colors.length)];
 };
 
 const useStyles = createUseStyles({
@@ -93,7 +89,7 @@ const D3Chart = () => {
         .attr('width', (d, i) => (i > 0 ? x(d.distance) - x(data[i - 1].distance) : 0))
         .attr('y', 0)
         .attr('height', height)
-        .attr('fill', d => getColorBySurface(d.surface))
+        .attr('fill', getRandomColor)
         .attr('opacity', 0.3);
 
       const line = d3.line()
